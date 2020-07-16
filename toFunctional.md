@@ -9,11 +9,11 @@ React now suggestst that you don't create any new components using class-based c
 Knowing how class-based components work is important to understanding current React standards. It is also important for developers to be able to work in these older code-bases and refactor them to be more up-to-date.
 
 That is what we'll be practicing here! We'll update our components in three stages:
-1. Components with no functions and no state (`App, `FilmDetails`, and `FilmPoster`)
-2. Components with functions, but no state (`FilmRow`)
+1. Components with no props and no state (`App and `FilmDetails`)
+2. Components with props, but no state (`FilmPoster` and `FilmRow`)
 3. Components with state (`Fave` and `FilmListing`)
 
-### Tasks - Part 1: Components with no functions and no state
+### Tasks - Part 1: Components with no props and no state
 
 #### Step 1: Anatomy of a functional Component
 
@@ -70,6 +70,90 @@ function SuperSweetComponent() {
 export default SuperSweetComponent;
 ```
 
-#### Step 2: Change `App`, `FilmDetails`, and `FilmPoster`
+#### Part 2: Change `App` and `FilmDetails`
 
-Now that you know how those two components are different, change our three basic components to functional components. To check if you've done it right, run your program, go to your localhost, and see if the functionality of your app has changed. If it works the same as you left it, then you're good to go!
+Now that you know how those two components are different, change our two basic components to functional components. 
+To check if you've done it right, run your program, go to your localhost, and see if the functionality of your app has changed. If it works the same as you left it, then you're good to go!
+
+### Part 3: Components with props, but no state
+
+When we change class-based components to functional components, we might wonder, "Where do the props come in? And how do we access them?" Since functional components are just functions being ran, we can think, "how do I give any function information?" The answer? Parameters! That's right, folks! Functional components take an optional parameter called `props`! 
+> This parameter is optional because a functional component might not take props, like `App`
+
+Let's look at `FilmPoster.js`. Change it to a functional component like you did to `App` and `FilmDetails`, but this time, give it the parameter `props`. If you try to run your server, you should get an error saying: "TypeError: Cannot read property 'props' of undefined". That is because the `this` keyword is no longer referring to the contents of a class, `this` is undefined, so it can't have a `props` value. Anywhere your component uses `this.props`, change it simply to `props`, to reference the parameter.
+
+<details>
+<summary>Check your work!</summary>
+
+```jsx
+import React from 'react';
+
+function FilmPoster(props) {
+  return (
+    <img src={props.poster_path} 
+        alt={`Poster of the film ${props.title}`} 
+    />
+  );
+}
+</details>
+
+export default FilmPoster;
+```
+
+The next thing we need to translate is our functions. In `FilmRow`, we have a function to handle the click event for each row. Translating this is fairly simple, because the component is a function, we can just declare `handleDetailsClick` as a local variable and then call it later on.
+For example:
+
+```jsx
+function DogCard(props) {
+  const handleFaveClick = dogDeets => {
+    // add fave stuff here
+    console.log(`You've favorited ${dogDeets.name}`)
+  }
+
+  return (
+    <img src={props.dog.img} alt={props.dog.name}>
+    <h3>{props.dog.name}</h3>
+    <div className="add-fave" onClick={() => handleFaveClick(props.dog)}>
+      <p>Add {props.dog.name} to your faves!</p>
+    </div>
+  )
+
+
+}
+```
+
+<details>
+<summary>Check your work!</summary>
+
+```jsx
+import React from 'react';
+import FilmPoster from './FilmPoster';
+import Fave from './Fave';
+
+function FilmRow(props) {
+  const handleDetailsClick = film => {
+    console.log(`Fetching movie details for ${film.title}`)
+  }
+
+  return (
+    <div className="film-row" onClick={() => handleDetailsClick(props.film)}>
+      <FilmPoster 
+        poster_path={`https://image.tmdb.org/t/p/w780${props.film.poster_path}`}
+        title={props.film.title}
+      />
+
+      <div className="film-summary">
+        <h1>{props.film.title}</h1>
+        <p>{props.film.release_date.substr(0,4)}</p>
+      </div>
+      <Fave />
+    </div>
+  );
+}
+
+export default FilmRow;
+```
+
+</details>
+
+### Part 4: Components with state

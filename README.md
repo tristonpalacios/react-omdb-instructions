@@ -159,7 +159,7 @@ const allDogs = this.props.dogs.map((dog, i) => <DogComponent dog={dog} key={`go
 
 Make each film row in the film list look like the main finished image, using the following markup (replace "TITLE" and "YEAR" with the actual title and year of the film).
 
-```
+```jsx
 <div className="film-row">
   <img src={posterUrl} alt="" />
 
