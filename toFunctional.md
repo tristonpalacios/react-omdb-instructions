@@ -95,10 +95,10 @@ function FilmPoster(props) {
     />
   );
 }
-</details>
 
 export default FilmPoster;
 ```
+</details>
 
 The next thing we need to translate is our functions. In `FilmRow`, we have a function to handle the click event for each row. Translating this is fairly simple, because the component is a function, we can just declare `handleDetailsClick` as a local variable and then call it later on.
 For example:
