@@ -157,3 +157,115 @@ export default FilmRow;
 </details>
 
 ### Part 4: Components with state
+
+We have two more components to transfer over: `Fave` and `FilmListing`. They both use state so we'll have to translate that into `useState` hook. Let's start with `FilmListing`.
+
+Translate it to a functional component by:
+* Removing the import of `{ Component }`
+* Change your component declaration from `class` to `function`
+* Add props as a parameter
+* Take out the `render` function.
+* Take out all references to `this.props` and replace it with just `props`
+* Refactor your state to use the react hook `useState`
+* Change all instances of `this.state` to reference the relevant variable
+
+#### `Fave` with bonus
+
+Turn `Fave` into a functional component the same way you did with `FilmListing`. The bonus comes if you made a variable to store the icon based on state:
+
+```jsx
+import React, { Component } from 'react';
+
+class Fave extends Component {
+  constructor() {
+    super()
+    this.state = {
+      isFave: false,
+    }
+  }
+
+  handleClick = (e) => {
+    e.stopPropagation()
+    console.log("handling fave click!");
+    this.setState({isFave: !this.state.isFave})
+	}
+
+
+  render() {
+    let icon = this.state.isFave ? 'remove_from_queue' : 'add_to_queue'
+
+    return (
+      <div className={`film-row-fave ${icon}`} onClick={this.handleClick}>
+        <p className="material-icons">{icon}</p>
+      </div>
+    );
+  }
+}
+
+export default Fave;
+```
+
+We want state to hold variables that are mutable, so as a bonus, we'll make make `icon` a state variable.
+The first instinct might be to `setIcon` right after `setIsFave` in our `handleClick` function and simply add the ternary statement in there, but that will read the older version of `isFave` and be reversed. The best way to handle this change is to `useEffect` to set `icon` and have it track `isFave`.
+
+For example: 
+
+```jsx
+import React, { useState, useEffect } from 'react';
+
+function Heart(props) {
+  const [liked, setLiked] = useState(false);
+  const [icon, setIcon] = useState('like')
+
+  useEffect(()=>{
+    setIcon(liked ? 'unlike' : 'like')
+  }, [liked])
+
+  const handleClick = (e) => {
+    e.stopPropagation()
+    setLiked(!liked)
+  }
+
+  
+  return (
+    <div className={`heart ${icon}`} onClick={handleClick}>
+      <p className="icons">{icon}</p>
+    </div>
+  );
+}
+
+export default Heart;
+```
+
+<details>
+<summary> Stumped? Check your work </summary>
+
+```jsx
+import React, { useState, useEffect } from 'react';
+
+function Fave(props) {
+  const [isFave, setIsFave] = useState(false);
+  const [icon, setIcon] = useState('add_to_queue')
+
+  useEffect(()=>{
+    setIcon(isFave ? 'remove_from_queue' : 'add_to_queue')
+  }, [isFave])
+
+  const handleClick = (e) => {
+    e.stopPropagation()
+    console.log("handling fave click!");
+    setIsFave(!isFave)
+  }
+
+  
+  return (
+    <div className={`film-row-fave ${icon}`} onClick={handleClick}>
+      <p className="material-icons">{icon}</p>
+    </div>
+  );
+}
+
+export default Fave;
+```
+
+</details>
