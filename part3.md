@@ -268,3 +268,66 @@ Add a conditional in `FilmListing` so that if the `filter` state is set to `fave
 </details>
 
 Try it out - you should be able to add films to your favorites and view just your favorites list by clicking that tab.
+
+### Task 5: Adding Film Details
+
+Now, you'll render the film details from the `current` state.
+
+#### Step 1: Render the empty case for `FilmDetails`
+
+When the app loads, there is no film selected to display in `FilmDetails`. When a user clicks on a film in the `FilmListing`, you want to fetch and show the details. Thus, there are two scenarios for `FilmDetails`:
+- The empty scenario (no film selected)
+- The populated scenario (a film selected)
+
+You will store the mark up for each of these scenarios in their own constant variable:
+
+```jsx
+const filmInfo = (
+  <div className="film-detail is-hydrated">
+    <figure className="film-backdrop">
+      <img src={`https://image.tmdb.org/t/p/w1280/${props.film.backdrop_path}`} alt={`Screenshot from the film ${props.film.title}`} />
+      <h1 className="film-title">{props.film.title}</h1>
+    </figure>
+
+    <div className="film-meta">
+      <h2 className="film-tagline">{props.film.tagline}</h2>
+      <p className="film-detail-overview">
+        <img src={`https://image.tmdb.org/t/p/w780/${props.film.poster_path}`} className="film-detail-poster" alt={props.film.title} />
+        {props.film.overview}
+      </p>
+    </div>
+  </div>
+)
+
+const emptyInfo = (
+  <div className="film-detail">
+    <p>
+      <i className="material-icons">subscriptions</i>
+      <span>No film selected</span>
+    </p>
+  </div>
+)
+```
+
+> NOTE: You are using `props`, so if you didn't add it as a parameter to your `FilmDetails` function, then your app will break.
+
+#### Step 2: Conditionally render the current film
+
+To start, create a new variable to hold on to your DOM tree. You'll conditionally assign the value to this variable depending on whether or not there's a film object passed in through the props.
+
+Add this below the two declared `const` variables:
+
+```js
+let details = props.film.id ? filmInfo : emptyInfo
+```
+
+Now, the `return` statement of your `FilmDetails` function should finally look like this:
+
+```html
+return (
+  <div className="film-details">
+    <h1 className="section-title">Details</h1>
+    {details}
+  </div>
+)
+```

@@ -5,33 +5,37 @@
 Stop any project you currently have running; let's go back to the film application that you've started. You can run the app with `npm start`.
 
 You're almost finished! Now, You need to:
-- Show the details of each movie by getting this information from TMDB.
+- Replace info from `TMDB.js` with results from an api call to TMDB.
 - Refactor your React app to make it as clean as possible.
 
 ![](images/bladerunner.png)
 
-### Task 1: Adding the API call
+### Task 2: Adding the API call
 
-API calls in React are handled using the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) provided by modern browsers.
+API calls in React are handled using whatever AJAX library you want; [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)(provided by modern browsers) or [Axios](https://github.com/axios/axios) are some of the most common. 
 
-You already have a function where you want the API call to go (`handleDetailsClick` - when a user clicks for details of a movie, you'll call the API to get those details), so your `fetch` task will work inside that function. You've set up the rest of your app correctly.
+> Note: For official documentation on how to handle AJAX calls in react, [visit the docs](https://reactjs.org/docs/faq-ajax.html)
+
+You already have a function where you want the API call to go (`handleDetailsClick` - when a user clicks for details of a movie, you'll call the API to get those details), so your api call will work inside that function. You've set up the rest of your app to make this transition nice and smooth.
+
+We'll be using `Axios` for this section. TMDB also needs an API key, so we'll need to have a  `.env` file. To make both of these work, we'll have to install them.
+In your terminal, run `npm i dotenv axios` _(if using yarn, run `yarn add dotenv axios`)_. This will add these two packages as dependencies.
+
+
 
 #### Step 1: Set up the API key
 
-This step seems complicated, but it isn't! Just take it one step at a time. Because TMDB isn't a public API, you'll need to get an API key to add to your `fetch()` call; then, you'll want to make sure to keep the key in a safe spot.
+This step seems complicated, but it isn't! Just take it one step at a time. Because TMDB isn't a public API, you'll need to get an API key to add to your axios call; then, you'll want to make sure to keep the key in a safe spot.
 
 - To gain access to the TMDB API, you'll need to get an API key from [TMDB](https://www.themoviedb.org).
   - TMDB only gives API keys to users with accounts, so you'll have to sign up first (it's free). However, it will ask for your phone and address.
   - Then, request an API key on your profile page ([further instructions](https://developers.themoviedb.org/3/getting-started)).
   - Once you have your API key, you need to include it in your app. Since you **never want to store app secrets in your repository**, you'll use the [`dotenv`](https://github.com/motdotla/dotenv) package to keep the API key in a local file.
 
-
-- You'll need to install `dotenv`.
-  - Run `npm install dotenv` on the command line to add the dependency to your `package.json` file
   - Create a new file at the root of your project called `.env.local` (accept the system warning).
   - In your `.env.local` file, add the line `REACT_APP_TMDB_API_KEY=<Your TMDB API v3 KEY>`
 
-*Note: The `.env.local` file is in your `.gitignore` by default when you create an app with `create-react-app`, so now your secret will never leak into your repository. It's important to note that since this is a front-end application, the built JavaScript will contain the key, which means end-users will be able to see it. However, that's fine for this practice app, since you'll only be running it locally.*
+*Note: The `.env.local` file is in your `.gitignore` by default when you create an app with `create-react-app`, so now your secret will never leak into your repository. It's important to note that since this is a front-end application, the built JavaScript will contain the key, which means end-users will be able to see it. However, that's fine for this practice app, since you'll only be running it locally. Putting it in a `.env` file is to protect it when pushing up to Github*
 
 - Now you have an API key saved in `dotenv`. Now, point your application to it: add the following to the top of your `TMDB.js` file:
 
@@ -88,7 +92,7 @@ fetch(url)
 
 Now, you have the API call to get information about your chosen movie.
 
-### Task 2: Refactoring our app
+### Task 3: Refactoring our app
 
 Before you continue to display the movie details to the user, let's clean up your application.
 
@@ -115,75 +119,6 @@ You haven't written out the `FilmDetails` component yet, but it currently only r
 
 Follow the same steps as above, and once again check in the browser for functionality.
 
-
-### Task 3: Adding Film Details
-
-You're almost finished. Now, you'll render the film details you're receiving from the API (and currently logging to the console) in the browser window for the user.
-
-#### Step 1: Add image URLs for `FilmDetails`
-
-Above the `return`, add the following `const` definitions for fetching backdrop and posters:
-
-```js
-const backdropUrl = `https://image.tmdb.org/t/p/w1280/${props.film.backdrop_path}`
-const posterUrl = `https://image.tmdb.org/t/p/w780/${props.film.poster_path}`
-```
-
-#### Step 2: Render the empty case for `FilmDetails`
-
-When the app loads, there is no film selected to display in `FilmDetails`. When a user clicks on a film in the `FilmListing`, you want to fetch and show the details. Thus, there are two scenarios for `FilmDetails`:
-- The empty scenario (no film selected)
-- The populated scenario (a film selected)
-
-You will store the mark up for each of these scenarios in their own constant variable:
-
-```html
-const filmInfo = (
-	<div className="film-detail is-hydrated">
-	  <figure className="film-backdrop">
-	    <img src={backdropUrl} alt="" />
-	    <h1 className="film-title">{this.props.film.title}</h1>
-	  </figure>
-
-	  <div className="film-meta">
-	    <h2 className="film-tagline">{this.props.film.tagline}</h2>
-	    <p className="film-detail-overview">
-	      <img src={posterUrl} className="film-detail-poster" alt={this.props.film.title} />
-	      {this.props.film.overview}
-	    </p>
-	  </div>
-	</div>
-    )
-    const emptyInfo = (
-        <div className="film-detail">
-	  <p>
-	    <i className="material-icons">subscriptions</i>
-	    <span>No film selected</span>
-	  </p>
-	</div>
-    )
-```
-
-#### Step 3: Conditionally render the current film
-
-To start, create a new variable to hold on to your DOM tree. You'll conditionally assign the value to this variable depending on whether or not there's a film object passed in through the props.
-
-Add this below the two declared `const` variables:
-
-```js
-let details = props.film.id ? filmInfo : emptyInfo
-```
-
-Now, the `return` statement of your `FilmDetails` function should finally look like this:
-
-```html
-return (
-  <div className="film-details">
-    <h1 className="section-title">Details</h1>
-    {detail}
-  </div>
-)
-```
 
 
 ## Taking it further
