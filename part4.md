@@ -10,7 +10,7 @@ You're almost finished! Now, You need to:
 
 ![](images/bladerunner.png)
 
-### Task 2: Adding the API call
+### Task 1: Adding the API call
 
 API calls in React are handled using whatever AJAX library you want; [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)(provided by modern browsers) or [Axios](https://github.com/axios/axios) are some of the most common. 
 
@@ -18,10 +18,7 @@ API calls in React are handled using whatever AJAX library you want; [Fetch API]
 
 You already have a function where you want the API call to go (`handleDetailsClick` - when a user clicks for details of a movie, you'll call the API to get those details), so your api call will work inside that function. You've set up the rest of your app to make this transition nice and smooth.
 
-We'll be using `Axios` for this section. TMDB also needs an API key, so we'll need to have a  `.env` file. To make both of these work, we'll have to install them.
-In your terminal, run `npm i dotenv axios` _(if using yarn, run `yarn add dotenv axios`)_. This will add these two packages as dependencies.
-
-
+React has the ability to read `.env` files already and `fetch` is built into js, so we're going to be using those two.
 
 #### Step 1: Set up the API key
 
@@ -37,58 +34,67 @@ This step seems complicated, but it isn't! Just take it one step at a time. Beca
 
 *Note: The `.env.local` file is in your `.gitignore` by default when you create an app with `create-react-app`, so now your secret will never leak into your repository. It's important to note that since this is a front-end application, the built JavaScript will contain the key, which means end-users will be able to see it. However, that's fine for this practice app, since you'll only be running it locally. Putting it in a `.env` file is to protect it when pushing up to Github*
 
-- Now you have an API key saved in `dotenv`. Now, point your application to it: add the following to the top of your `TMDB.js` file:
-
-```js
-import dotenv from 'dotenv';
-
-dotenv.config();
-```
-
-- And replace `'<REPLACE_THIS_WITH_TMDB_API_KEY>'` with `process.env.REACT_APP_TMDB_API_KEY`.
+- Now you have an API key saved in an environment variable. Now, point your application to it: replace `'<REPLACE_THIS_WITH_TMDB_API_KEY>'` with `process.env.REACT_APP_TMDB_API_KEY`.
 
 Your secrets are now set up!
 
 #### Step 2: Make a `const` called `url` with the API's URL
 
-Now that you have the API key to call for movie details, let's go back to making that call.
+Now that you have the API key to call for movies, let's go back to making that call.
 
-In your `App.js` `handleDetailsClick` method, add the following `const` right above your `setState`:
+In your `App.js`, we're going to make a `useEffect` to call our api and populate our films with the results.
+We're going to define a constant for our URL query
 
 ```JavaScript
-const url = `https://api.themoviedb.org/3/movie/${film.id}?api_key=${TMDB.api_key}&append_to_response=videos,images&language=en`
+const popularFilmsUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB.api_key}&language=en-US&page=1`;
 ```
 
-This is the URL to which you'll send your request to get detailed information about each film. You're passing the `film.id` and the `TMDB.api_key` as query string parameters.
+This is the URL to which you'll send your request to get a list of popular films. You are passing the `TMDB.api_key` as query string parameters. Go ahead and just `console.log(popularFilmsUrl)` underneath its declaration to make sure that you're getting a url.
 
+> NOTE: You can see your api key!! That's okay for development (we put it in a `.env` so it won't be shown on github), but what you'll want to do in production is have that API call be done on your server and the results sent to your React front-end.
 
 #### Step 3: Make the API call
 
+Now that you have the API key and URL set up, it's time to set up our useEffect!
+Underneath our state variables, we're going to use this React Hook to call the api. We'll move our `popularFilmsUrl` into the anonymous function and pass the hook an empty array as the second parameter to makes sure it only gets called once.
 
-Now that you have the API key and URL set up, underneath the new URL variable, fetch the API.
+A reminder on the structure of `useEffect`
 
-```JavaScript
-const url = `https://api.themoviedb.org/3/movie/${film.id}?api_key=${TMDB.api_key}&append_to_response=videos,images&language=en`
-
-fetch(url)
-.then(response=>response.json())
-.then(json=>{console.log(json)}) // take a look at what you get back!
-})
+```jsx
+useEffect(() => {
+  console.log("I love it when this component gets rendered!")
+  fetch('https://api.kanye.rest')
+  .then(response => response.json())
+  .then(jsonDeets => {
+    setWisdom(jsonDeets.quote)
+  })
+}, [])
 ```
 
-Try clicking a movie row in your browser - the data for it should appear in the console.
+Instead of the [Kanye Rest](https://github.com/ajzbc/kanye.rest) url, we'll use our `popularFilmsUrl`. Then once we get our `jsonDeets`, we'll just console log them.
+
+> NOTE: remember to import `useEffect`
+
+<details>
+<summary>Check your work</summary>
+
+```jsx
+useEffect(() => {
+  const popularFilmsUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB.api_key}&language=en-US&page=1`;
+  fetch(popularFilmsUrl)
+  .then(response => response.json())
+  .then(jsonDeets => {
+    console.log(jsonDeets)
+  })
+}, [])
+```
+</details>
+
+Now, when your page loads, you should get a console log of the response from your api!
 
 #### Step 4: Set the state when the API call completes
 
-Let's now set your `current` state to be the object you get back from TMDB. Move the `setState` call into the API call.
-
-```JavaScript
-fetch(url)
-.then(response=>response.json())
-.then(json => { 
-	this.setState({current: json}) // take a look at what you get back!
-}) 
-```
+Let's now set your `films` state to be the results you get back from TMDB. 
 
 Now, you have the API call to get information about your chosen movie.
 
