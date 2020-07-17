@@ -6,7 +6,6 @@ Stop any project you currently have running; let's go back to the film applicati
 
 You're almost finished! Now, You need to:
 - Replace info from `TMDB.js` with results from an api call to TMDB.
-- Refactor your React app to make it as clean as possible.
 
 ![](images/bladerunner.png)
 
@@ -94,48 +93,19 @@ Now, when your page loads, you should get a console log of the response from you
 
 #### Step 4: Set the state when the API call completes
 
-Let's now set your `films` state to be the results you get back from TMDB. 
+Let's now set your `films` state to be the results you get back from TMDB. You should have 20 results that you can play with now!
 
-Now, you have the API call to get information about your chosen movie.
+#### BONUS: Play around with the api!
 
-### Task 3: Refactoring our app
-
-Before you continue to display the movie details to the user, let's clean up your application.
-
-Let's refactor any components that only have a `render()` method into functional components. Functional components are simpler and will gain performance benefits in future versions of React. It is considered good practice to use them wherever possible.
-
-#### Step 1: Refactor `FilmPoster.js`
-
-1. Replace the `class`/`extends` definition with a `function`. Remember that your function should accept a `props` argument.
-2. Remove the `render()` method, keeping only the `return` function.
-3. Replace all instances of `this.props` with simply `props`
-4. Remove `{Component}` from the React `import` at the top since you no longer use it (but still import `React`).
-
-Check in your browser to be sure the functionality hasn't changed.
-
-#### Step 2: Refactor `FilmRow`
-
-Follow the same steps to refactor the FilmRow component.
-
-Check in the browser to be sure the functionality hasn't changed.
-
-#### Step 3: Refactor `FilmDetails`
-
-You haven't written out the `FilmDetails` component yet, but it currently only renders UI. Therefore, you can also make it a functional component.
-
-Follow the same steps as above, and once again check in the browser for functionality.
-
-
+Look at the [TMDB v3 API docs](https://developers.themoviedb.org/3/getting-started/introduction) and make some different api calls. What would be the url if you wanted to get top rated films? What would your url look like if you wanted more results?
 
 ## Taking it further
 
 Here are some optional things you can do to deepen your knowledge and take this app further:
 
-- Refactor `Fave` into a functional component.
-- Move the filters into a `FilmListingFilter` component.
-- Implement client-side routing to show multiple pages of films.
 - Go through the CSS and see how the app is styled (it uses both flexbox and CSS Grid).
+- Show the `fave` state of a film on `FilmDetails`.
+- Move the filters into a `FilmListingFilter` component.
 - Add a textarea for a review to each film detail and save that on the film object.
 - Show an icon in `FilmListing` for all films with reviews.
-- Show the `fave` state of a film on `FilmDetails`.
 - Add any other features you can think of!
