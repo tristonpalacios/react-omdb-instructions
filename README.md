@@ -4,7 +4,7 @@ Clone this **[starter repo](https://github.com/WDI-SEA/react-film-starter-repo)*
 
 ## Your Mission
 
-Today the plan is to identify the app components, create the overall structure, then split that structure into individual components. You'll pass films as props to each component and ultimately use iteration to render one component for each film. At the end of this exercise, you will have this app:
+Today the plan is to identify the app components, create the overall structure and then split that structure into individual components. You'll pass films as props to each component and ultimately use iteration to render one component for each film. At the end of this exercise, you will have this app:
 
 ![](images/film-1.png)
 
@@ -132,7 +132,7 @@ You should have a list of all the films appear in the left column.
 Now we're going to move each of these `film-row` divs into a `FilmRow` component.
 
 * Create a `FilmRow.js` component. 
-* Modivy your `allFilms` array so that your `map` function returns a `FilmRow` component.
+* Modify your `allFilms` array so that your `map` function returns a `FilmRow` component.
 * Pass the entire film to each `FilmRow` component as a `film` prop.
 
 NOTE: Whenever you use `map` to create child attributes, React wants you to imput a `key` attribute; if you don't, you'll get an error "Warning: Each child in a list should have a unique "key" prop." 
@@ -182,4 +182,4 @@ Make each film row in the film list look like the main finished image, using the
 
 * Create a `FilmPoster` component that resceives a `poster_path` prop.
 * Replace the `img` tag in your `FilmRow` component with a `FilmPoster` component that receives a `poster_path`.
-* Find a way to populate the `alt` tag for each poster image
+* Find a way to populate the `alt` tag for each poster image.
