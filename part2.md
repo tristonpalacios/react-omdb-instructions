@@ -48,7 +48,7 @@ Eventually, you'll want an "ALL" heading and a "FAVES" heading that are clickabl
 
 First set up the function that will determine what movies are shown in the list. You'll need to be able to tell if you are showing the user *all* of the movies or if you are *filtering* down to show the user just some of the movies.
 
-In `FilmListing`, create a `handleFilterClick` function that takes a string `filter` as an argument. For now, just print a message that says `Setting filter to ` and the `filter` argument.
+In `FilmListing`, create a `handleFilterClick` function that takes `filter` as an argument. For now, just print a message that says `Setting filter to ` and the `filter` argument.
 
 This new function isn't connected to a button in the UI yet, so nothing should change.
 
