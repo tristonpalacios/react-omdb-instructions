@@ -132,32 +132,15 @@ Try clicking the Fave icon/button - there's only one message now.
 
 You have now triggered the events you'll need to update your app. Next, you'll add states to your app - data in your React app that will change (like if the user adds a film to the Faves list)
 
-#### Step 1: Create a constructor for the `Fave` component
-
 The first state you'll add will be whether a currently selected film is a user's favorite.
 
-Add a constructor method to the `Fave` component. Remember that any time you add a constructor to a class-based component, you have to call the `super` method (and pass it `props` if you need acces to `this.props` in the constructor).
-
-#### Step 2 (NOT APPLICABLE IF USING ARROW FUNCTIONS): Bind your event handler to this component
-
-`this` binding can be a very finicky topic in JavaScript, but there are tricks to using it. To make your event handler work properly, you'll need to bind `this` to it. (Arrow functions take care of this for you, so you can skip this part if you're using ES6!) 
-
-Add this line to your `Fave` component's constructor:
-
-```js
-// This binding is necessary to make `this` work in the callback
-this.handleClick = this.handleClick.bind(this)
-```
-
-This will be required for each event handler defined on any of your class-based components - so add it for all the `onClick` methods in your classes, in that class' constructor (make sure to change `handleClick` to the name of the function in that class).
-
-#### Step 3: Set the initial state
+#### Step 1: Set the initial state
 
 By default, a film is not a user's favorite.
 
-Back to the `Fave` component, set `this.state` to an object with the key `isFave` and the value `false`. This will set up the initial state of the component.
+In the `Fave` component, set `state` to an object with the key `isFave` and the value `false`. This will set up the initial state of the component.
 
-#### Step 4: Set the state in your event handler
+#### Step 2: Set the state in your event handler
 
 When the user clicks the Fave icon/button to add or remove a film from their favorites list, the app should change the film's `isFave` state to reflect that.
 
@@ -168,7 +151,7 @@ Inside of the `handleClick` method on the `Fave` component, use `this.setState` 
   <code>isFave: !this.state.isFave</code> or use a ternery statement
 </details>
 
-#### Step 5: Set the `className` on `div` based on the `IsFave` state
+#### Step 3: Set the `className` on `div` based on the `IsFave` state
 
 You now want the `className` attribute on the `div` to dynamically update when the state is changed. Currently, the `className` on the `div` is `add_to_queue`. However, if the film is already favorited, then the film is already in the queue. Therefore, when `isFave: true`, the `className` should instead be `remove_from_queue`.
 
