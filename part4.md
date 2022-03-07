@@ -61,16 +61,16 @@ A reminder on the structure of `useEffect`
 
 ```jsx
 useEffect(() => {
-  console.log("I love it when this component gets rendered!")
-  fetch('https://api.kanye.rest')
+  console.log("UseEffect is firing!")
+  fetch(popularFilmsUrl)
   .then(response => response.json())
-  .then(jsonDeets => {
-    setWisdom(jsonDeets.quote)
+  .then(jsonData => {
+    console.log(jsonData)
   })
 }, [])
 ```
 
-Instead of the [Kanye Rest](https://github.com/ajzbc/kanye.rest) url, we'll use our `popularFilmsUrl`. Then once we get our `jsonDeets`, we'll just console log them.
+Then once we get our `jsonDeets`, we'll just console log them.
 
 > NOTE: remember to import `useEffect`
 
