@@ -168,3 +168,10 @@ Now we're going to move each of these `film-row` divs into a `FilmRow` component
 * Create a `Poster` component that resceives a `url` prop.
 * Replace the `img` tag in your `FilmRow` component with a `Poster` component that receives a `url`.
 * Find a way to populate the `alt` tag for each poster image.
+
+---
+
+### Finished Product So Far:
+
+
+![](images/part1final.png)
