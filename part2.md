@@ -44,19 +44,19 @@ That's all! Your click is not yet adding favorites, but it is working. Later, yo
 
 Eventually, you'll want an "ALL" heading and a "FAVES" heading that are clickable links - when the user clicks "ALL", the left sidebar will show all movies; when the user clicks "FAVES", the left sidebar will show only their favorite movies. Now, you'll make the basis of that.
 
-#### Step 1: Define a `handleFilterClick` function in `FilmListing`
+#### Step 1: Define a `handleFilterClick` function in `FilmList`
 
 First set up the function that will determine what movies are shown in the list. You'll need to be able to tell if you are showing the user *all* of the movies or if you are *filtering* down to show the user just some of the movies.
 
-In `FilmListing`, create a `handleFilterClick` function that takes `filter` as an argument. For now, just print a message that says `Setting filter to ` and the `filter` argument.
+In `FilmList`, create a `handleFilterClick` function that takes `filter` as an argument. For now, just print a message that says `Setting filter to ` and the `filter` argument.
 
 This new function isn't connected to a button in the UI yet, so nothing should change.
 
 #### Step 2: Add provided markup to display the ALL/FAVES menu
 
-Add some markup to the `FilmListing` component so that you can have something worth clicking. You'll keep the Films heading; underneath it, you'll add two categories of "ALL" and "FAVES". You're also setting up displaying the film's length, which you aren't using yet.
+Add some markup to the `FilmList` component so that you can have something worth clicking. You'll keep the Films heading; underneath it, you'll add two categories of "ALL" and "FAVES". You're also setting up displaying the film's length, which you aren't using yet.
 
-Change the `FilmListing` component to render this:
+Change the `FilmList` component to render this:
 
 ```html
 <div className="film-list">
@@ -79,11 +79,11 @@ Change the `FilmListing` component to render this:
 If you check your browser, these subheadings should appear in the left column.
 The `section-count` spans will show how many films are in each category. Right now, we're showing the overall lenth of the films given to us by the parent component and eventually we'll change the `FAVES` section count to be something similar to show how many faves we have. Until then, displaying `0` is a good filler.
 
-#### Step 3: Add `onClick` inside `FilmListing` to trigger filtering to `'faves'`
+#### Step 3: Add `onClick` inside `FilmList` to trigger filtering to `'faves'`
 
 Now you have an ALL section and a FAVES section - you can hook that filtering function you just created up to it.
 
-Add an `onClick` inside `FilmListing` so that when "FAVES" is clicked, it calls the `handleFilterClick` method you created with the parameter `'faves'`.
+Add an `onClick` inside `FilmList` so that when "FAVES" is clicked, it calls the `handleFilterClick` method you created with the parameter `'faves'`.
 
 
 <details>
@@ -96,11 +96,11 @@ Add an `onClick` inside `FilmListing` so that when "FAVES" is clicked, it calls 
 
 Try clicking FAVES - does it print to the console?
 
-#### Step 4: Add `onClick` inside `FilmListing` to trigger filtering to `'all'`
+#### Step 4: Add `onClick` inside `FilmList to trigger filtering to `'all'`
 
 Now FAVES is clickable, so the next step is to make ALL clickable as well.
 
-Add an `onClick` inside `FilmListing` so that when "ALL" is clicked, it calls the `handleFilterClick` method with argument `'all'` and when "FAVES" is clicked, it calls `handleFilterClick` with the argument `faves`.
+Add an `onClick` inside `FilmList` so that when "ALL" is clicked, it calls the `handleFilterClick` method with argument `'all'` and when "FAVES" is clicked, it calls `handleFilterClick` with the argument `faves`.
 
 Now, you should see a message in the console when you click either option. Later, instead of viewing a message, clicking either option will display the correct list of movies to the user - but now you've assured the options are clickable, which is an important first step.
 
@@ -168,7 +168,7 @@ Note: It will be easier to read if you determine which class to set first, store
 
 Once you have this, clicking the "Add" icon in each row should change the icon displayed.
 
-### Tasks - Part 5: Add State to `FilmListing` Component
+### Tasks - Part 5: Add State to `FilmList` Component
 
 Currently, you have the ALL and FAVE headings, but all films are always shown. Next, you'll add a state so that you can track if the user is currently filtering to view ALL movies or only their FAVE movies.
 
@@ -176,13 +176,13 @@ Currently, you have the ALL and FAVE headings, but all films are always shown. N
 
 By default, a user will be viewing the entire list of movies.
 
-In the `FilmListing` component, set `this.state` to an object with the key `filter` and the value `all`. This will set up the initial state of the component.
+In the `FilmList` component, set `this.state` to an object with the key `filter` and the value `all`. This will set up the initial state of the component.
 
 #### Step 2: Set the state in your event handler
 
 The `handleFilterClick` method is the one that's called when a user clicks ALL or FAVES, so it's where you'll change the filter.
 
-Inside of the `handleFilterClick` method on the `FilmListing` component, use `this.setState` to set the value of `filter` to the value passed to the event handler.
+Inside of the `handleFilterClick` method on the `FilmList` component, use `this.setState` to set the value of `filter` to the value passed to the event handler.
 
 #### Step 3: Set the className on div based on filter state
 
