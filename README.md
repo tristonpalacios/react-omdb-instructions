@@ -127,16 +127,6 @@ Now we're going to move each of these `film-row` divs into a `FilmRow` component
 * Modify your `allFilms` array so that your `map` function returns a `FilmRow` component.
 * Pass the entire film to each `FilmRow` component as a `film` prop.
 
-NOTE: Whenever you use `map` to create child attributes, React wants you to imput a `key` attribute; if you don't, you'll get an error "Warning: Each child in a list should have a unique "key" prop." 
-Each company will have different naming conventions for this, but for now we can pass the index in and add ``filmRow-${i}``
-
-For example: 
-
-```jsx
-// You can also use ES6's implicit return to keep this all inline
-const allDogs = this.props.dogs.map((dog, i) => <DogComponent dog={dog} key={`goodDog-${i}`} />)
-```
-
 <details>
   <summary>Hint 1: </summary>
   Don't forget to import <code>FilmRow</code> so you can use it in your <code>map</code> iterator.
@@ -144,12 +134,14 @@ const allDogs = this.props.dogs.map((dog, i) => <DogComponent dog={dog} key={`go
 
 <details>
   <summary>Hint 2: </summary>
-  Inside your <code>FilmRow</code> component, <code>film</code> is now, a prop, so you'll need to access it with <code>this.props.film</code>.
-  </details>
+  Inside your <code>FilmRow</code> component, <code>film</code> is now, a prop, so you'll need to access it with <code>this.props</code> etc.
+</details>
 
-#### Step 7: Flesh out each film row
+---
 
-Make each film row in the film list look like the main finished image, using the following markup (replace "TITLE" and "YEAR" with the actual title and year of the film).
+### Step 7: Flesh out each film row
+
+* Make each film row in the film list look like the main finished image, using the following markup (replace "TITLE" and "YEAR" with the actual title and year of the film).
 
 ```jsx
 <div className="film-row">
@@ -162,16 +154,17 @@ Make each film row in the film list look like the main finished image, using the
 </div>
 ```
 
-- You'll have to create the `posterUrl` for each film by combining the prefix `https://image.tmdb.org/t/p/w780/` with each film's `poster_path` property.
+*  You'll have to create the `posterUrl` for each film by combining the prefix `https://image.tmdb.org/t/p/w780/` with each film's `poster_path` property.
 
 <details>
   <summary>Hint: getting the year</summary>
   You'll also have to extract the year from the <code>release_date</code> property. To do this, you could use the <code>split()</code>, <code>substring()</code> or <code>getFullYear()</code> JS method.
 </details>
 
+---
 
-#### Step 8: Move film posters to their own component
+### Step 8: Move film posters to their own component
 
-* Create a `FilmPoster` component that resceives a `poster_path` prop.
-* Replace the `img` tag in your `FilmRow` component with a `FilmPoster` component that receives a `poster_path`.
+* Create a `Poster` component that resceives a `url` prop.
+* Replace the `img` tag in your `FilmRow` component with a `Poster` component that receives a `url`.
 * Find a way to populate the `alt` tag for each poster image.
