@@ -1,7 +1,5 @@
 # ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Starting a Film Project
 
-Clone this **[starter repo](https://github.com/WDI-SEA/react-film-starter-repo)**, `npm install`, and run with `npm start`.
-
 ## Your Mission
 
 Today the plan is to identify the app components, create the overall structure and then split that structure into individual components. You'll pass films as props to each component and ultimately use iteration to render one component for each film. At the end of this exercise, you will have this app:
@@ -18,12 +16,21 @@ Today the plan is to identify the app components, create the overall structure a
   <summary>Hint</summary>
   Don't forget any <code>import</code> statements as you add more files.
 </details>
+---
 
-#### Step 1: Create baseline layout
+### Step 0: The Starter Repo
 
-First, create the layout. You'll have a Films column and a Details column.
+The starter code for this app _does not exist in this repo_. 
+0. Clone **[this starter repo](https://github.com/WDI-SEA/react-film-starter-repo)**
+1. Install dependencies with `npm install`
+2. Run with `npm start`
+3. Investigate your starter code. (This is actually the CRA starter code from before hooks were a thing! You're basically looking back in time right now.)
 
-Make the provided `App` component render the following code:
+---
+
+### Step 1: Create baseline layout
+
+* Create the two-colum layout; **films** on the left, **details** on the right. Add the following JSX to **App**:
 
 ```html
 <div className="film-library">
@@ -37,13 +44,18 @@ Make the provided `App` component render the following code:
 </div>
 ```
 
-#### Step 2: Create new components
+* Notice that the starter code has the appropriate CSS already build in for you!
 
-Move the `film-list` and `film-details` divs into their own separate components (in separate files), `FilmListing.js` and `FilmDetails.js`, respectively.
+---
 
-Make sure you now call these components in `App.js`. Check your app in the browser. If you've done it right, nothing will have changed, and the application will look the same.
+### Step 2: Break the columns into components
 
-#### Step 3: Pass props to the new components
+* Move the two column divs into their own separate components (in separate files), `FilmList.js` and `Details.js`.
+* Render the components inside **App** so your app ends up looking exactly like it did in the previous step. 
+
+---
+
+### Step 3: Pass props to the new components
 
 Our films data is stored in the `TMDB.js` file in the `src` folder. Pass the `films` array to each of your new components as props.
 
@@ -78,9 +90,11 @@ If you check your file, it still shouldn't look differently. We're sending the p
   </code>
 </details>
 
-#### Step 4: Render a film
+---
 
-In the `FilmListing` component, render the title of just the first film as an `<h1>`, below the `section-title`.
+### Step 4: Render a film
+
+In the `FilmList` component, render the title of just the first film as an `<h1>`, below the `section-title`.
 
 Does "It" appear on the left side of your browser?
 
@@ -89,45 +103,23 @@ Does "It" appear on the left side of your browser?
   The films prop is an array, and you just want the title from the first one.
 </details>
 
+---
 
-#### Step 5: Create and render an array of film title elements
+### Step 5: Create and render an array of film title elements
 
-In the `render()` of `FilmListing` (above the return), create an `allFilms` variable that uses [`.map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) to iterate over the array of films and return an element to display the title for each one:
+* In the `render()` of `FilmListing` (above the return), create an `allFilms` variable that uses [`.map()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) to iterate over the array of films and return a `div` with a class of `film-row`, that contains an `h1` with the title for each film.
 
-```js
+```jsx
   <div className="film-row">
     <h1>{film.title}</h1>
   </div>
 ```
 
-Using JSX, display `allFilms` underneath the `<h1 className="section-title">FILMS</h1>` heading.
+* Display `allFilms` underneath the `<h1 className="section-title">FILMS</h1>` heading.
 
-You should have a list of all the films appear in the left column.
+---
 
-<details>
-  <summary>Step 5 solution:</summary>
-  <code>
-    
-    render() {
-      const allFilms = this.props.films.map((film) =>{
-        return (
-          <div className="film-row">
-            <h1>{film.title}</h1>
-          </div>
-        )
-      })
-      return (
-          <div className="film-list">
-            <h1 className="section-title">FILMS</h1>
-            {allFilms}
-          </div>
-      );
-    }
-  
-  </code>
-</details>
-
-#### Step 6: Move the film rows to their own component
+### Step 6: Move the film rows to their own component
 
 Now we're going to move each of these `film-row` divs into a `FilmRow` component.
 
