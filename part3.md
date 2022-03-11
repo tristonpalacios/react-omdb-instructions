@@ -1,19 +1,26 @@
-# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) You Do: Film Exercise - Unidirectional Flow
+
+# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) React OMDB Films [Part 3]
 
 ## Your Mission
-
-Stop any project you currently have running; let's go back to the film application that you've started. You can run the app with `npm start`.
 
 You're almost finished! Now, you need to:
 
 - Add films to a user's faves
 - Filter the films the user is looking at
 
-To do this, you'll need to lift your state upwards so that all of the data is more easily shared across components. Remember unidirectional flow - data is *only* going to go *down* the component tree! Find the highest level of the tree in which there are two or more *sibling* components that need information about the same state; the state should reside in the parent of those components so it can be passed downward to all of them.
+in other words, make the clickable things you created in part 2 actually do something more meaningful when you click them!
+
+To do this, you'll need to lift your state upwards so that all of the data is more easily shared across components. Remember unidirectional flow - data is *only* going to go *down* the component tree! Find anwhere where there are two or more *sibling* components that need information about the same state; the state should reside in the parent of those components so it can be passed downward to all of them.
 
 ![](http://bitmakerhq.s3.amazonaws.com/resources/react-film-library-component-hierarchy.png)
 
-### Task 1: Add State to the Appropriate Components
+## Goal 0: Let's get functional!
+
+Convert all components that you've build so far in this app to functional components.
+
+---
+
+## Goal 1: Add State to the Appropriate Components
 
 #### Step 1: `useState` to set mutable data
 
@@ -22,25 +29,26 @@ We'll need to hold two pieces of info:
 1. `films`: initialize this variable to hold a reference to `TMDB.films`
 2. `current`: this variable should start off as an empty object
 
-`FilmListing ` will need the films and `FilmDetails` will need the currently selected film, so we're going to put these in their common parent component, `App.js`
+`FilmList ` will need the films and `Details` will need the currently selected film, so we're going to put these in their common parent component, `App.js`
 
-#### Step 2: Pass state values to `FilmListing` and `FilmDetails` as props
+#### Step 2: Pass state values to `FilmList` and `Details` as props
 
 Now that you have state stored on the `App` component, you want to pass those as props to your child components. Just change `App.js` for now:
 
-- `FilmListing` should receive a `films` prop that now references the `App.js` `films` state.
+- `FilmList` should receive a `films` prop that now references the `App.js` `films` state.
 
-- `FilmDetails` should receive a `film` prop that references the `App.js` `current` state.
+- `Details` should receive a `film` prop that references the `App.js` `current` state.
 
 Since you aren't doing anything with these props yet, nothing should change.
 
-#### Step 3: Add a `Faves` state to `FilmListing.js`
+#### Step 3: Add a `Faves` state to `FilmList.js`
 
-In `FilmListing.js`, add a `faves` state, which is initialized as an empty array.
+In `FilmList.js`, add a `faves` state, which is initialized as an empty array.
 
+---
 
-### Task 2: Move the `Fave` Event Handler up the Component Tree
-When a user favorites a film, that information needs to be shared with the `FilmListing` component and all it's children in order to properly filter the list.
+## Goal 2: Move the `Fave` Event Handler up the Component Tree
+When a user favorites a film, that information needs to be shared with the `FilmList` component and all it's children in order to properly filter the list.
 
 This isn't possible right now, because you're currently handling the favorite toggling of a film on the `Fave` component. The `Fave` component is at the bottom of the component hierarchy, and props and state only flow downward. Additionally, the `Fave` component doesn't even know which film is being favorited, so this isn't a great place to store a state for whether a film is a favorite.
 
@@ -83,12 +91,12 @@ This is all you need to change in `Fave.js`! It will still check to see if the u
 
 You'll define `onFaveToggle` in a higher component.
 
-#### Step 4: Define `handleFaveToggle` on the `FilmListing` component
+#### Step 4: Define `handleFaveToggle` on the `FilmList` component
 
 The `Fave` component is expecting a prop, but one doesn't exist yet. Let's change that next.
 
-You'll move the favorite toggle functionality all the way up to the `FilmListing` component - where the state for `filter` is.
-- In the `FilmListing` component, create a `handleFaveToggle()` function. It doesn't need to do anything yet, but soon you will update the `faves` array when a film is favorited or unfavorited. The `handleFaveToggle` function should accept a film object as an argument (this will be the film that the user is toggling).
+You'll move the favorite toggle functionality all the way up to the `FilmList` component - where the state for `filter` is.
+- In the `FilmList` component, create a `handleFaveToggle()` function. It doesn't need to do anything yet, but soon you will update the `faves` array when a film is favorited or unfavorited. The `handleFaveToggle` function should accept a film object as an argument (this will be the film that the user is toggling).
 
 
 #### Step 5: Clone the `faves` state
@@ -162,7 +170,7 @@ const handleFaveToggle = film => {
 
 #### Step 10: Pass the `handleFaveToggle` function to `FilmRow` through props
 
-In the `FilmListing` component, you render one `FilmRow` component for each film in the `films` prop. You need to pass the `onFaveToggle` function down to each `FilmRow`.
+In the `FilmList` component, you render one `FilmRow` component for each film in the `films` prop. You need to pass the `onFaveToggle` function down to each `FilmRow`.
  
 <details>
   <summary>Your map function should look like something this:</summary>
@@ -191,15 +199,15 @@ In the `FilmRow`, pass the `onFaveToggle` to the `Fave` component. Be sure to wr
   <code> <Fave onFaveToggle={() => { props.onFaveToggle(props.film) }} /> </code>
 </details>
 
-#### Step 12: Pass `isFave` down from `FilmListing` through `FilmRow`
+#### Step 12: Pass `isFave` down from `FilmList` through `FilmRow`
 
 The `Fave` component is also expecting to receive a prop called `isFave`, so you need to pass `isFave` to the `Fave` component from `FilmRow`.
 
-`FilmRow` doesn't know about the `faves` array, but its parent, `FilmListing`, does.
+`FilmRow` doesn't know about the `faves` array, but its parent, `FilmList`, does.
 
 The `isFave` prop should be true or false depending on whether the film is in the `faves` array.
 
-In `FilmListing`, when creating each `FilmRow`, pass a prop called `isFave` whose value uses the [`includes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes) method to determine if the film is in the faves array or not.
+In `FilmList`, when creating each `FilmRow`, pass a prop called `isFave` whose value uses the [`includes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes) method to determine if the film is in the faves array or not.
 
 <details>
   <summary>The call to the <code>FilmRow</code> component should now look similar to this:</summary>
@@ -227,9 +235,9 @@ Look in your browser to see this working - the JavaScript console will log if so
 
 #### Step 13: Update `Faves` counter
 
-Currently in the browser, the `faves` counter the user sees is always 0. You'll update the counter in the `FilmListing` to accurately show the number of faves in the array.
+Currently in the browser, the `faves` counter the user sees is always 0. You'll update the counter in the `FilmList` to accurately show the number of faves in the array.
 
-If you look at what's rendered in the `FilmListing` component, right now the faves counter is hardcoded to `0`. Replace that with the length of the `faves` array that is received through the props.
+If you look at what's rendered in the `FilmList` component, right now the faves counter is hardcoded to `0`. Replace that with the length of the `faves` array that is received through the props.
 
 You now have favorites properly stored and available to all components, and you have a counter that accurately reflects that to the user.
 
@@ -237,20 +245,20 @@ Great job! Check it out in your browser.
 
 ### Task 3: Move the details event handler up component tree from `FilmRow`
 
-In `FilmRow`, there's still the function to handle when a user clicks a row for more details. The `FilmDetails` component needs to know which movie to show details for though, so we'll need to move the `handleDetailsClick` to `App.js`, since it is the parent of both `FilmListing` AND `FilmDetails`. `handleDetailsClick` will change the `current` state.
+In `FilmRow`, there's still the function to handle when a user clicks a row for more details. The `Details` component needs to know which movie to show details for though, so we'll need to move the `handleDetailsClick` to `App.js`, since it is the parent of both `FilmList` AND `Details`. `handleDetailsClick` will change the `current` state.
 
 * Move the `handleDetailsClick` definition to the `App` component.
-* Pass `handleDetailsClick` to `FilmListing` as a prop.
+* Pass `handleDetailsClick` to `FilmList` as a prop.
 * Pass `handleDetailsClick` to `FilmRow` as a prop.
 * In the `onClick` of `FilmRow`, call `props.handleDetailsClick` in an anonymous function and pass it `props.film`.
 
-For `handleDetailsClick` in the `App` component, just log to the console and set the `current` state to the passed film for now. You'll handle looking up film details later. Makesure you pass the `current` state as a `film` prop to the `FilmDetails` component.
+For `handleDetailsClick` in the `App` component, just log to the console and set the `current` state to the passed film for now. You'll handle looking up film details later. Makesure you pass the `current` state as a `film` prop to the `Details` component.
 
-### Task 4: Make the filter work on `FilmListing`
+### Task 4: Make the filter work on `FilmList`
 
-You have the `filter` state on `FilmListing`, but you still need to make it actually change the UI. You're not going to move the `filter` state because this filter only affects the `FilmListing`, not any other parts of the app.
+You have the `filter` state on `FilmList`, but you still need to make it actually change the UI. You're not going to move the `filter` state because this filter only affects the `FilmList`, not any other parts of the app.
 
-Add a conditional in `FilmListing` so that if the `filter` state is set to `faves`, the listing only shows films in the faves array. Otherwise, it shows all films.
+Add a conditional in `FilmList` so that if the `filter` state is set to `faves`, the listing only shows films in the faves array. Otherwise, it shows all films.
 
 * In the `render` method, define a constant called `filmsToDisplay` and us a turnery statement to return all the films, or just the favorite films.
 * Change your `allFilms` map function to be called on `filmsToDisplay` instead of `this.props.films`.
@@ -273,9 +281,9 @@ Try it out - you should be able to add films to your favorites and view just you
 
 Now, you'll render the film details from the `current` state.
 
-#### Step 1: Render the empty case for `FilmDetails`
+#### Step 1: Render the empty case for `Details`
 
-When the app loads, there is no film selected to display in `FilmDetails`. When a user clicks on a film in the `FilmListing`, you want to fetch and show the details. Thus, there are two scenarios for `FilmDetails`:
+When the app loads, there is no film selected to display in `Details`. When a user clicks on a film in the `FilmList`, you want to fetch and show the details. Thus, there are two scenarios for `Details`:
 - The empty scenario (no film selected)
 - The populated scenario (a film selected)
 
@@ -309,7 +317,7 @@ const emptyInfo = (
 )
 ```
 
-> NOTE: You are using `props`, so if you didn't add it as a parameter to your `FilmDetails` function, then your app will break.
+> NOTE: You are using `props`, so if you didn't add it as a parameter to your `Details` function, then your app will break.
 
 #### Step 2: Conditionally render the current film
 
@@ -321,7 +329,7 @@ Add this below the two declared `const` variables:
 let details = props.film.id ? filmInfo : emptyInfo
 ```
 
-Now, the `return` statement of your `FilmDetails` function should finally look like this:
+Now, the `return` statement of your `Details` function should finally look like this:
 
 ```html
 return (
